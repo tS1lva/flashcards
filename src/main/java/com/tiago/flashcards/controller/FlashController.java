@@ -45,4 +45,9 @@ public class FlashController {
     public void deleteAll() {
         flashService.deleteAll();
     }
+
+    @GetMapping("/review")
+    public List<FlashcardEntity> review() {
+        return flashService.review();
+    }
 }

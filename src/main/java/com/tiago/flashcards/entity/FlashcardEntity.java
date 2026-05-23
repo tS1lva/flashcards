@@ -16,10 +16,10 @@ public class FlashcardEntity {
     private String question;
     private String answer;
 
-    @JsonFormat (pattern = "dd-MM-yyyy")
+
     private LocalDate createdAt;
 
-    @JsonFormat (pattern = "dd-MM-yyyy")
+
     private LocalDate nextTime;
 
     public Long getId() {
