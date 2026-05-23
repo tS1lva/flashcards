@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,41 +52,26 @@ public class FlashService {
 
     public List<FlashcardEntity> review () {
         List<FlashcardEntity> allFlashcards = this.list();
-        List<FlashcardEntity> toBeReviewd = this.list();
-        toBeReviewd.clear();
+        List<FlashcardEntity> toBeReviewd = new ArrayList<>();
 
-        LocalDate actual = LocalDate.now();
-        int actualDay = actual.getDayOfMonth();
-        int actualMonth = actual.getMonthValue();
-        int actualYear = actual.getYear();
-
-        LocalDate a = LocalDate.of(actualYear, actualMonth, actualDay);
-
+        LocalDate now = LocalDate.now();
 
         for (FlashcardEntity flashcard : allFlashcards) {
+            LocalDate nextTimeReviewDate = flashcard.getNextTime();
 
-            int flashcardDay = flashcard.getNextTime().getDayOfMonth();
-            int flashcardMonth = flashcard.getNextTime().getMonthValue();
-            int flashcardYear = flashcard.getNextTime().getYear();
-
-            LocalDate b = LocalDate.of(flashcardYear, flashcardMonth, flashcardDay);
-
-
-            if (a.isAfter(b)) {
-
+            if (now.isAfter(nextTimeReviewDate)) {
                 toBeReviewd.add(flashcard);
-                System.out.println("nao cheguei aqui");
             }
         }
 
         if (toBeReviewd.isEmpty()) {
-            System.out.println("Lista Vazia");
-            return allFlashcards;
+            System.out.println("Tudo em dia!");
+            return new  ArrayList<>();
+
         } else {
-            System.out.println("Lista Cheia");
+            System.out.println("Temos " + toBeReviewd.size() + " flashcards para revisar!");
             return toBeReviewd;
         }
-
     }
 
 
