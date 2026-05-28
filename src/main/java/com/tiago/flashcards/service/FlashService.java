@@ -1,12 +1,10 @@
 package com.tiago.flashcards.service;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tiago.flashcards.entity.FlashcardEntity;
 import com.tiago.flashcards.repository.FlashRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +56,7 @@ public class FlashService {
         flashRepository.deleteAll();
     }
 
-    public List<FlashcardEntity> review () {
+    public List<FlashcardEntity> getCardsToReview() {
         List<FlashcardEntity> allFlashcards = this.list();
         List<FlashcardEntity> toBeReviewd = new ArrayList<>();
 
@@ -81,6 +79,8 @@ public class FlashService {
             return toBeReviewd;
         }
     }
+
+
 
 
 }

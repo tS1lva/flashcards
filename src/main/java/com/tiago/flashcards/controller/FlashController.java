@@ -46,8 +46,8 @@ public class FlashController {
         flashService.deleteAll();
     }
 
-    @GetMapping("/review")
-    public List<FlashcardEntity> review() {
-        return flashService.review();
+    @GetMapping("/getCardsToReview")
+    public List<FlashcardEntity> getCardsToReview() {
+        return flashService.getCardsToReview();
     }
 }
