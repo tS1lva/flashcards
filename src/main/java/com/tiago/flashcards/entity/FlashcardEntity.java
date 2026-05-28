@@ -13,14 +13,24 @@ public class FlashcardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
     private Long id;
 
+    @Getter
+    @Setter
     private String question;
+
+    @Getter
+    @Setter
     private String answer;
 
+    @Getter
+    @Setter
     private LocalDate createdAt;
 
-
+    @Getter
+    @Setter
     private LocalDate nextTime;
 
     @Getter
@@ -33,46 +43,6 @@ public class FlashcardEntity {
 
     @Getter
     @Setter
-    private int difficult;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDate getNextTime() {
-        return nextTime;
-    }
-
-    public void setNextTime(LocalDate nextTime) {
-        this.nextTime = nextTime;
-    }
+    private double difficult;
 
 }
