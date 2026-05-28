@@ -2,6 +2,8 @@ package com.tiago.flashcards.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -16,11 +18,22 @@ public class FlashcardEntity {
     private String question;
     private String answer;
 
-
     private LocalDate createdAt;
 
 
     private LocalDate nextTime;
+
+    @Getter
+    @Setter
+    private int interval;
+
+    @Getter
+    @Setter
+    private int repetition;
+
+    @Getter
+    @Setter
+    private int difficult;
 
     public Long getId() {
         return id;
