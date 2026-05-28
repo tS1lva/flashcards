@@ -32,6 +32,14 @@ public class FlashService {
     }
 
     public List<FlashcardEntity> create (FlashcardEntity flashcard) {
+
+        //Setting initial card config
+        flashcard.setRepetition(0);
+        flashcard.setDifficult(2.5);
+        flashcard.setInterval(0);
+        flashcard.setCreatedAt(LocalDate.now());
+        flashcard.setNextTime(LocalDate.now().plusDays(1));
+
         flashRepository.save(flashcard);
         return this.list();
     }
