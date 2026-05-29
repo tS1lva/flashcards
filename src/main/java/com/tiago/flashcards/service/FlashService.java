@@ -80,7 +80,17 @@ public class FlashService {
         }
     }
 
+    public void reviewFlashcardById (Long id, int score) {
+        FlashcardEntity flashcard = flashRepository.getById(id);
+        FlashCard flashCardReviwer = new FlashCard(score, flashcard.getInterval(), flashcard.getRepetition(), flashcard.getDifficult());
+        flashCardReviwer.calculateInterval(score, flashcard.getRepetition());
+        flashcard.setNextTime(LocalDate.now().plusDays(flashCardReviwer.getInterval()));
+        flashcard.setRepetition(flashCardReviwer.getRepetition());
+        flashcard.setDifficult(flashCardReviwer.getDifficult());
+        flashcard.setInterval(flashCardReviwer.getInterval());
+        flashRepository.save(flashcard);
 
+    }
 
 
 }

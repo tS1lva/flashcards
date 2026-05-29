@@ -50,4 +50,9 @@ public class FlashController {
     public List<FlashcardEntity> getCardsToReview() {
         return flashService.getCardsToReview();
     }
+
+    @PutMapping("/reviewFlashcardById/{id}/{score}")
+    public void reviewFlashcardById(@PathVariable Long id, @PathVariable int score) {
+        flashService.reviewFlashcardById(id, score);
+    }
 }
