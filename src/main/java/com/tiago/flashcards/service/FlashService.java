@@ -1,5 +1,7 @@
 package com.tiago.flashcards.service;
 
+import com.tiago.flashcards.dto.FlashCreateRequest;
+import com.tiago.flashcards.dto.FlashDto;
 import com.tiago.flashcards.entity.FlashcardEntity;
 import com.tiago.flashcards.repository.FlashRepository;
 import org.springframework.stereotype.Service;
@@ -17,37 +19,50 @@ public class FlashService {
         this.flashRepository = flashRepository;
     }
 
-    public List<FlashcardEntity> list () {
+    public List<FlashDto> list () {
 //        Sort sort = Sort.by("prioridade").ascending().and(
 //                Sort.by("descricao").ascending()
 //        );
 //        return flashRepository.findAll(sort);
-        return flashRepository.findAll();
+        List<FlashDto> flashDtos = new ArrayList<>();
+
+        for (FlashcardEntity flashcardEntity : flashRepository.findAll()) {
+
+            flashDtos.add(this.toDto(flashcardEntity));
+
+        }
+        return flashDtos;
     }
 
     public FlashcardEntity getById (Long id) {
         return flashRepository.getById(id);
     }
 
-    public List<FlashcardEntity> create (FlashcardEntity flashcard) {
+    public List<FlashDto> create (FlashCreateRequest flashCreateRequest) throws Exception {
 
+        if (flashCreateRequest.getAnswer() == null || flashCreateRequest.getQuestion() == null) {
+            throw new Exception("Invalid answer or question");
+        }
+        FlashcardEntity flashcardEntity = new FlashcardEntity();
         //Setting initial card config
-        flashcard.setRepetition(0);
-        flashcard.setDifficult(2.5);
-        flashcard.setInterval(0);
-        flashcard.setCreatedAt(LocalDate.now());
-        flashcard.setNextTime(LocalDate.now().plusDays(1));
+        flashcardEntity.setRepetition(0);
+        flashcardEntity.setDifficult(2.5);
+        flashcardEntity.setInterval(0);
+        flashcardEntity.setCreatedAt(LocalDate.now());
+        flashcardEntity.setNextTime(LocalDate.now().plusDays(1));
+        flashcardEntity.setQuestion(flashCreateRequest.getQuestion());
+        flashcardEntity.setAnswer(flashCreateRequest.getAnswer());
 
+        flashRepository.save(flashcardEntity);
+        return this.list();
+    }
+
+    public List<FlashDto> update (FlashcardEntity flashcard) {
         flashRepository.save(flashcard);
         return this.list();
     }
 
-    public List<FlashcardEntity> update (FlashcardEntity flashcard) {
-        flashRepository.save(flashcard);
-        return this.list();
-    }
-
-    public List<FlashcardEntity> delete (Long id) {
+    public List<FlashDto> delete (Long id) {
         flashRepository.deleteById(id);
         return this.list();
     }
@@ -56,13 +71,13 @@ public class FlashService {
         flashRepository.deleteAll();
     }
 
-    public List<FlashcardEntity> getCardsToReview() {
-        List<FlashcardEntity> allFlashcards = this.list();
-        List<FlashcardEntity> toBeReviewd = new ArrayList<>();
+    public List<FlashDto> getCardsToReview() {
+        List<FlashDto> allFlashcards = this.list();
+        List<FlashDto> toBeReviewd = new ArrayList<>();
 
         LocalDate now = LocalDate.now();
 
-        for (FlashcardEntity flashcard : allFlashcards) {
+        for (FlashDto flashcard : allFlashcards) {
             LocalDate nextTimeReviewDate = flashcard.getNextTime();
 
             if (now.isAfter(nextTimeReviewDate)) {
@@ -90,6 +105,20 @@ public class FlashService {
         flashcard.setInterval(flashCardReviwer.getInterval());
         flashRepository.save(flashcard);
 
+    }
+
+    public FlashDto toDto (FlashcardEntity flashcardEntity) {
+        FlashDto flashDto = new FlashDto();
+        flashDto.setId(flashcardEntity.getId());
+        flashDto.setQuestion(flashcardEntity.getQuestion());
+        flashDto.setAnswer(flashcardEntity.getAnswer());
+        flashDto.setCreatedAt(flashcardEntity.getCreatedAt());
+        flashDto.setNextTime(flashcardEntity.getNextTime());
+        flashDto.setInterval(flashcardEntity.getInterval());
+        flashDto.setDifficult(flashcardEntity.getDifficult());
+        flashDto.setRepetition(flashcardEntity.getRepetition());
+
+        return flashDto;
     }
 
 
