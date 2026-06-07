@@ -1,28 +1,64 @@
 package com.tiago.flashcards.service;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class FlashCard {
-    // Dificuldade
-    private float d;
+    @Getter
+    @Setter
+    private int score;
 
-    // Estabilidade
-    private float s;
+    @Getter
+    @Setter
+    private int interval;
 
-    // Retenção
-    private float r;
+    @Getter
+    @Setter
+    private int repetition;
 
-    // Nota g
-    // (1 Again) (2Hard) (3Good) (4Easy)
-    private int g;
+    @Getter
+    @Setter
+    private double difficult;
 
-    // Peso w
-    private int w;
+    public FlashCard(int score, int interval, int repetition, double difficult) {
+        this.score = score;
+        this.interval = interval;
+        this.repetition = repetition;
+        this.difficult = difficult;
+    }
 
-    // Quantidade de revisões
-    private int reviewTimes;
+    public void calculateInterval (int score, int repetition) {
+        if (score >= 3) {
 
-    
+            if (repetition ==0) {
+                this.interval = 1;
+            }
+            else if (repetition == 1) {
+                this.interval = 6;
+            }
+            else if (repetition >= 3) {
+                this.calculateDifficult(score);
+                this.interval = (int) (this.interval * this.difficult);
+            }
+            this.repetition++;
 
+        } else {
+            this.repetition = 0;
+            this.interval = 1;
+        }
+    }
 
+    public void calculateDifficult (int score) {
+        double newDificult;
+
+        newDificult = this.difficult + (0.1 - (5 - score) * (0.08 + (5 - score) * 0.02));
+
+        if (newDificult < 1.3) {
+            this.difficult = 1.3;
+        } else {
+            this.difficult = newDificult;
+        }
+    }
 
 
 }
