@@ -4,6 +4,7 @@ import com.tiago.flashcards.dto.FlashCreateRequest;
 import com.tiago.flashcards.dto.FlashDto;
 import com.tiago.flashcards.entity.FlashcardEntity;
 import com.tiago.flashcards.repository.FlashRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,13 +21,11 @@ public class FlashService {
     }
 
     public List<FlashDto> list () {
-//        Sort sort = Sort.by("prioridade").ascending().and(
-//                Sort.by("descricao").ascending()
-//        );
-//        return flashRepository.findAll(sort);
+        Sort sort = Sort.by("id").ascending();
+
         List<FlashDto> flashDtos = new ArrayList<>();
 
-        for (FlashcardEntity flashcardEntity : flashRepository.findAll()) {
+        for (FlashcardEntity flashcardEntity : flashRepository.findAll(sort)) {
 
             flashDtos.add(this.toDto(flashcardEntity));
 
