@@ -27,8 +27,14 @@ public class FlashController {
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<FlashcardEntity> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(flashService.getById(id));
+    public ResponseEntity<FlashDto> getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(flashService.getById(id));
+        }
+        catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @PostMapping("/create")
@@ -42,9 +48,13 @@ public class FlashController {
 
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<List<FlashDto>> update(FlashcardEntity flashcard) {
-        return ResponseEntity.ok(flashService.update(flashcard));
+    @PutMapping("/update/{id}")
+    public ResponseEntity<List<FlashDto>> update(@PathVariable Long id, @RequestBody FlashCreateRequest flashcard) {
+        try {
+            return ResponseEntity.ok(flashService.update(id, flashcard));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/delete/{id}")

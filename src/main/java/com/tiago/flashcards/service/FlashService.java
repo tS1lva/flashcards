@@ -33,8 +33,11 @@ public class FlashService {
         return flashDtos;
     }
 
-    public FlashcardEntity getById (Long id) {
-        return flashRepository.getById(id);
+    public FlashDto getById (Long id) {
+
+        FlashcardEntity flashcardEntity =  flashRepository.findById(id).orElse(null);
+
+        return this.toDto(flashcardEntity);
     }
 
     public List<FlashDto> create (FlashCreateRequest flashCreateRequest) throws Exception {
@@ -56,8 +59,13 @@ public class FlashService {
         return this.list();
     }
 
-    public List<FlashDto> update (FlashcardEntity flashcard) {
-        flashRepository.save(flashcard);
+    public List<FlashDto> update (Long id, FlashCreateRequest flashcard) {
+        FlashcardEntity flashcardEntity = flashRepository.findById(id).orElse(null);
+
+        flashcardEntity.setQuestion(flashcard.getQuestion());
+        flashcardEntity.setAnswer(flashcard.getAnswer());
+
+        flashRepository.save(flashcardEntity);
         return this.list();
     }
 
