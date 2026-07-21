@@ -28,4 +28,9 @@ public class DeckController {
     public DeckDto findById(@PathVariable  Long id) {
         return deckService.findById(id);
     }
+
+    @DeleteMapping("deleteAll")
+    public void deleteAll () {
+        deckService.deleteAll();
+    }
 }

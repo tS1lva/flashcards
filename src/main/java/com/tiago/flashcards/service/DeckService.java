@@ -29,6 +29,10 @@ public class DeckService {
         return toDto(deckEntity);
     }
 
+    public void deleteAll() {
+        deckRepository.deleteAll();
+    }
+
     public DeckDto toDto(DeckEntity deck) {
         DeckDto deckDto = new DeckDto();
         deckDto.setId(deck.getId());
